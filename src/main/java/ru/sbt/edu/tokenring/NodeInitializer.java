@@ -1,5 +1,5 @@
 package ru.sbt.edu.tokenring;
 
-public interface NodeInitializer<T> {
-    void init(Queue<T> queue);
+public interface NodeInitializer {
+    void init(Queue queue);
 }

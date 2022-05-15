@@ -6,10 +6,8 @@ import java.util.List;
 public class TokenRing implements Runnable {
     private final List<Node> nodes;
 
-    public TokenRing(int n, NodeGenerator nodeGenerator) {
-        nodes = new ArrayList<>();
-        for (int i = 0; i < n; i++)
-            nodes.add(nodeGenerator.get());
+    public TokenRing(int n, List<Node> nodes) {
+        this.nodes = nodes;
         for (int i = 0; i < n; i++)
             nodes.get(i).setNext(nodes.get((i + 1) % n));
     }
@@ -26,6 +24,12 @@ public class TokenRing implements Runnable {
         } finally {
             for (var thread : threads)
                 thread.interrupt();
+            for (var thread : threads) {
+                try {
+                    thread.join();
+                } catch (InterruptedException ignored) {
+                }
+            }
         }
     }
 }

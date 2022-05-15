@@ -1,6 +1,6 @@
 package ru.sbt.edu.tokenring;
 
-public interface Queue<T> {
-    void enq(T x) throws InterruptedException;
-    T deq() throws InterruptedException;
+public interface Queue {
+    void enq(Package value) throws InterruptedException;
+    Package deq() throws InterruptedException;
 }

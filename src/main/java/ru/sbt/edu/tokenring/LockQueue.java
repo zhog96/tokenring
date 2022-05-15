@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 
-public class LockQueue<T> implements Queue<T> {
+public class LockQueue implements Queue {
     private final Lock enqLock;
     private final Lock deqLock;
     private final Condition notEmptyCondition;
@@ -14,10 +14,10 @@ public class LockQueue<T> implements Queue<T> {
     private final int capacity;
 
     private class Node {
-        public T value;
+        public Package value;
         public volatile Node next;
-        public Node(T x) {
-            value = x;
+        public Node(Package value) {
+            this.value = value;
             next = null;
         }
     }
@@ -34,9 +34,9 @@ public class LockQueue<T> implements Queue<T> {
     }
 
     @Override
-    public void enq(T x) throws InterruptedException {
+    public void enq(Package value) throws InterruptedException {
         boolean mustWakeDequeuers = false;
-        Node node = new Node(x);
+        Node node = new Node(value);
         enqLock.lock();
         try {
             while (size.get() == capacity)
@@ -59,8 +59,8 @@ public class LockQueue<T> implements Queue<T> {
     }
 
     @Override
-    public T deq() throws InterruptedException {
-        T result;
+    public Package deq() throws InterruptedException {
+        Package result;
         boolean mustWakeEnqueuers = false;
         deqLock.lock();
         try {
