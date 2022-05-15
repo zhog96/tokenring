@@ -45,15 +45,17 @@ public class LockFreeQueue implements Queue {
             Node first = head.get();
             Node last = tail.get();
             Node next = first.next.get();
-            if (first == last) {
-                if (next == null) {
-                    continue;
-                }
-                tail.compareAndSet(last, next);
-            } else {
-                Package value = next.value;
-                if (head.compareAndSet(first, next)) {
-                    return value;
+            if (first == head.get()) {
+                if (first == last) {
+                    if (next == null) {
+                        continue;
+                    }
+                    tail.compareAndSet(last, next);
+                } else {
+                    Package value = next.value;
+                    if (head.compareAndSet(first, next)) {
+                        return value;
+                    }
                 }
             }
         }

@@ -2,6 +2,7 @@ package ru.sbt.edu.tokenring;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.TimeUnit;
 
 public class ArrayBlockingQueueAdapter implements Queue {
     private final ArrayBlockingQueue<Package> queue;
@@ -18,11 +19,7 @@ public class ArrayBlockingQueueAdapter implements Queue {
     @Override
     public Package deq() throws InterruptedException {
         while (!Thread.currentThread().isInterrupted()) {
-            Package value = queue.poll();
-            if (value == null) {
-                continue;
-            }
-            return value;
+            return queue.take();
         }
         throw new InterruptedException();
     }
